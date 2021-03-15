@@ -6,3 +6,4 @@ selenium==3.141.0
 flask_swagger_ui==3.36.0
 numpy==1.18.5
 scikit_learn==0.24.1
+gunicorn

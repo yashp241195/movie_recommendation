@@ -1,9 +1,9 @@
 {
     "openapi": "3.0.0",
     "info": {
-      "description": "sean",
+      "description": " (Content Filter - Cosine similarity)",
       "version": "1.0.0",
-      "title": "Flask API example",
+      "title": "Movie Recommendation System",
       "license": {
         "name": "MIT",
         "url": "https://opensource.org/licenses/MIT"
@@ -16,90 +16,69 @@
     ],
     "tags": [
       {
-        "name": "Book Request",
-        "description": "Example API for requesting and return book requests"
+        "name": "Movies",
+        "description": "API for requesting and return movies requests"
       }
     ],
     "paths": {
-      "/request": {
-        "get": {
-          "tags": [
-            "Book Request"
-          ],
-          "summary": "Returns bookRequests",
-          "responses": {
-            "200": {
-              "description": "OK",
-              "schema": {
-                "$ref": "#/components/schemas/bookRequests"
-              }
-            }
-          }
-        },
-        "post": {
-          "tags": [
-            "Book Request"
-          ],
-          "summary": "Create a new book request system",
-          "requestBody": {
-            "description": "Book Request Post Object",
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/bookRequestPostBody"
-                }
-              }
-            }
-          },
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "201": {
-              "description": "OK",
-              "schema": {
-                "$ref": "#/components/schemas/id"
-              }
-            },
-            "400": {
-              "description": "Failed. Bad post data."
-            }
-          }
-        }
-      },
-      "/request/{id}": {
+      "/movies/recommend?name={name}&n={n}": {
         "parameters": [
           {
-            "name": "id",
+            "name": "name",
             "in": "path",
             "required": true,
-            "description": "ID of the cat that we want to match",
-            "type": "string"
+            "description": "movie name",
+            "type": "string",
+            "default":"Avatar"
+          },
+          {
+            "name": "n",
+            "in": "path",
+            "required": true,
+            "description": "top n recommended movies",
+            "type": "string",
+            "default":"5"
           }
         ],
         "get": {
           "tags": [
-            "Book Request"
+            "Movies"
           ],
-          "summary": "Get book request with given ID",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "required": true,
-              "description": "Book Request id",
-              "schema": {
-                "$ref": "#/components/schemas/id"
-              }
-            }
-          ],
+          "summary": "Returns recommended movies list similar to given movie title {name}",
           "responses": {
             "200": {
-              "description": "OK",
-              "schema": {
-                "$ref": "#/components/schemas/bookRequest"
-              }
+              "description": "OK"
+            }
+          }
+        }
+      },
+      "/movies/search?startwith={startwith}&n={n}": {
+        "parameters": [
+          {
+            "name": "startwith",
+            "in": "path",
+            "required": true,
+            "description": " search the titles of the movies startwith ",
+            "type": "string",
+            "default":"A"
+          },
+          {
+            "name": "n",
+            "in": "path",
+            "required": true,
+            "description": "top n search results which starts with {startwith}",
+            "type": "string",
+            "default":"5"
+          }
+        ],
+        "get": {
+          "tags": [
+            "Movies"
+          ],
+          "summary": "Get the list of movies which startwith title {startwith}",
+          "responses": {
+            "200": {
+              "description": "OK"
             },
             "400": {
               "description": "Failed. Misunderstood Request."
@@ -108,132 +87,10 @@
               "description": "Failed. Book request not found."
             }
           }
-        },
-        "put": {
-          "summary": "edit a book request by ID",
-          "tags": [
-            "Book Request"
-          ],
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "required": true,
-              "description": "Book Request id",
-              "schema": {
-                "$ref": "#/components/schemas/id"
-              }
-            }
-          ],
-          "requestBody": {
-            "description": "Book Request Object",
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/bookRequest"
-                }
-              }
-            }
-          },
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "OK",
-              "schema": {
-                "$ref": "#/components/schemas/bookRequest"
-              }
-            },
-            "400": {
-              "description": "Failed. Bad post data."
-            }
-          }
-        },
-        "delete": {
-          "summary": "Delete Book Request by ID",
-          "tags": [
-            "Book Request"
-          ],
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "required": true,
-              "description": "Book Request Id",
-              "schema": {
-                "$ref": "#/components/schemas/id"
-              }
-            }
-          ],
-          "responses": {
-            "204": {
-              "description": "OK",
-              "schema": {
-                "$ref": "#/components/schemas/id"
-              }
-            },
-            "400": {
-              "description": "Failed. Misunderstood Request."
-            },
-            "404": {
-              "description": "Failed. Book Request not found."
-            }
-          }
-        }
-      }
-    },
-    "components": {
-      "schemas": {
-        "id": {
-          "properties": {
-            "uuid": {
-              "type": "string"
-            }
-          }
-        },
-        "bookRequestPostBody": {
-          "type": "object",
-          "properties": {
-            "title": {
-              "type": "string",
-              "format": "string"
-            },
-            "email": {
-              "type": "string",
-              "format": "email"
-            }
-          }
-        },
-        "bookRequest": {
-          "type": "object",
-          "properties": {
-            "title": {
-              "type": "string",
-              "format": "string"
-            },
-            "email": {
-              "type": "string",
-              "format": "email"
-            },
-            "timestamp": {
-              "type": "string",
-              "format": "number"
-            }
-          }
-        },
-        "bookRequests": {
-          "type": "object",
-          "properties": {
-            "bookRequest": {
-              "type": "object",
-              "additionalProperties": {
-                "$ref": "#/components/schemas/bookRequest"
-              }
-            }
-          }
         }
       }
     }
+    
   }
+
+  

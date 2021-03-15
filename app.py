@@ -32,7 +32,7 @@ def hello():
     return "Hello World! Welcome to the movie recommendation app"
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
 
 # for nodemon kind of functionality in flask run the following commands
 # export FLASK_APP=app.py

@@ -1,6 +1,6 @@
 console.log("Hello world")
 
-const BASE_URL = 'http://localhost:5000/'
+const BASE_URL = 'https://movie-recommendation-202.herokuapp.com/'
 
 const loadMovies = async (input,n=5) => {
     
